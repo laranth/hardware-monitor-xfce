@@ -6,33 +6,38 @@ readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Size used for the icons is 24x24 (16x16 is also ok for a smaller panel)
 readonly ICON="${DIR}/icons/fan.png"
 
-# RPM values
-readonly CPU_COOLER="$(sensors | grep -A 0 fan2 | cut -c24-32)"
-readonly CASE_FAN1="$(sensors | grep -A 0 fan3 | cut -c24-32)"
-readonly CASE_FAN2="$(sensors | grep -A 0 fan4 | cut -c24-32)"
-readonly CASE_FAN3="$(sensors | grep -A 0 fan5 | cut -c24-32)"
-readonly CASE_FAN4="$(sensors | grep -A 0 fan6 | cut -c24-32)"
+# RPM values -- the "ASUS TUF GAMING X670E-PLUS" needs a "modprobe nct6775" to get these to work
+# sensors.conf:
+#   chip "nct6799-isa-0290"
+#     label fan1 "CHA1"
+#     label fan2 "CPU"
+#     label fan3 "CHA2"
+#     label fan4 "CHA3"
+#     label fan5 "CHA4"
+#     label fan6 "W_PUMP+"
+#     label fan7 "AIO_PUMP"
+readonly CPU="$( sensors | grep fan2 | awk '{printf "%4d", $2}')"
+readonly CHA1="$(sensors | grep fan1 | awk '{printf "%4d", $2}')"
+readonly CHA3="$(sensors | grep fan4 | awk '{printf "%4d", $2}')"
 
 # Panel
+PANEL=""
 if [[ $(file -b "${ICON}") =~ PNG|SVG ]]; then
-  INFO="<img>${ICON}</img>"
-else
-  INFO="<txt>"
+  PANEL+="<img>${ICON}</img>"
+  if hash xfce4-taskmanager &> /dev/null; then
+      PANEL+="<click>xfce4-taskmanager</click>"
+  fi
 fi
-INFO+="</txt>"
+PANEL+="<txt>${CPU} RPM</txt>"
 
 # Tooltip
-MORE_INFO="<tool>"
-MORE_INFO+="\t\t\t Fans\n\n"
-MORE_INFO+="┌─ CPU Cooler\t\t${CPU_COOLER}\n"
-MORE_INFO+="├─ Case Fan 1\t\t${CASE_FAN1}\n"
-MORE_INFO+="├─ Case Fan 2\t\t${CASE_FAN2}\n"
-MORE_INFO+="├─ Case Fan 3\t\t${CASE_FAN3}\n"
-MORE_INFO+="└─ Case Fan 4\t\t${CASE_FAN4}\n"
-MORE_INFO+="</tool>"
+TOOLTIP="<tool><span font_desc='Source Code Pro Regular'>FANS ==========="
+TOOLTIP+="\nCPU\t${CPU} RPM"
+TOOLTIP+="\nCHA1\t${CHA1} RPM"
+TOOLTIP+="\nCHA3\t${CHA3} RPM</span></tool>"
 
 # Output panel
-echo -e "${INFO}"
+echo -e "${PANEL}"
 
 # Output hover menu
-echo -e "${MORE_INFO}"
+echo -e "${TOOLTIP}"
