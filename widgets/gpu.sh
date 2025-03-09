@@ -16,7 +16,7 @@ readonly GPU_MEMORY="$(    nvidia-smi --query-gpu=utilization.memory --format=cs
 readonly GPU_POWER="$(     nvidia-smi --query-gpu=power.draw.instant --format=csv,noheader,nounits)"
 readonly GPU_FAN_SPEED="$( nvidia-smi --query-gpu=fan.speed          --format=csv,noheader,nounits)"
 readonly GPU_TOTAL_MEM="$( nvidia-smi --query-gpu=memory.total       --format=csv,noheader,nounits)"
-readonly TOPGPU="$(        nvidia-smi -q | grep -A 3 'Process ID' | sed 's/: .*steamwebhelper.*/: ...steamwebhelper.../g' | awk -v RS='--\n' -v FS='\n|:' -v TM=${GPU_TOTAL_MEM} 'gsub(" MiB", "", $8) {printf "%5.2f%% %s\n", $8 / TM, $6}'| sort -rn)"
+readonly TOPGPU="$(        nvidia-smi -q | grep -A 3 'Process ID' | sed 's/: .*steamwebhelper.*/: ...steamwebhelper.../g' | sed 's/\\/\\\\/g' | awk -v RS='--\n' -v FS='\n| :' -v TM=${GPU_TOTAL_MEM} 'gsub(" MiB", "", $8) {printf "%5.2f%% %4s %s\n", $8 / TM, $4, $6}'| sort -rn)"
 
 # Panel
 PANEL=""
@@ -36,7 +36,7 @@ TOOLTIP+="\nTemperature\t${GPU_TEMP}°C"
 TOOLTIP+="\nMemory Used\t${GPU_MEMORY}%"
 TOOLTIP+="\nPower Draw\t${GPU_POWER}W"
 TOOLTIP+="\nFan Speed\t${GPU_FAN_SPEED}%"
-TOOLTIP+="\n"
+TOOLTIP+="\n\n"
 TOOLTIP+="DRIVERS =================\n"
 TOOLTIP+="NVIDIA\t\t${DRIVER_VERSION}\n"
 TOOLTIP+="CUDA\t\t${CUDA_VERSION}\n"
