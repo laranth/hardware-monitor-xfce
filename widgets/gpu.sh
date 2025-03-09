@@ -16,7 +16,7 @@ readonly GPU_MEMORY="$(    nvidia-smi --query-gpu=utilization.memory --format=cs
 readonly GPU_POWER="$(     nvidia-smi --query-gpu=power.draw.instant --format=csv,noheader,nounits)"
 readonly GPU_FAN_SPEED="$( nvidia-smi --query-gpu=fan.speed          --format=csv,noheader,nounits)"
 readonly GPU_TOTAL_MEM="$( nvidia-smi --query-gpu=memory.total       --format=csv,noheader,nounits)"
-readonly TOPGPU="$(        nvidia-smi -q | grep -A 3 'Process ID' | awk -v RS='--\n' -v FS='\n|:' -v TM=${GPU_TOTAL_MEM} 'gsub(" MiB", "", $8) {printf "%5.2f%% %s\n", $8 / TM, $6}'| sort -rn)"
+readonly TOPGPU="$(        nvidia-smi -q | grep -A 3 'Process ID' | sed 's/: .*steamwebhelper.*/: ...steamwebhelper.../g' | awk -v RS='--\n' -v FS='\n|:' -v TM=${GPU_TOTAL_MEM} 'gsub(" MiB", "", $8) {printf "%5.2f%% %s\n", $8 / TM, $6}'| sort -rn)"
 
 # Panel
 PANEL=""
