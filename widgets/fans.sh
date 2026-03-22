@@ -31,7 +31,7 @@ fi
 PANEL+="<txt>${CPU} RPM</txt>"
 
 # Tooltip
-TOOLTIP="<tool><span font_desc='Source Code Pro Regular'>FANS ==========="
+TOOLTIP="<tool><span font_desc='SauceCodePro Nerd Font Mono Medium'>FANS ==========="
 TOOLTIP+="\nCPU\t${CPU} RPM"
 TOOLTIP+="\nCHA1\t${CHA1} RPM"
 TOOLTIP+="\nCHA3\t${CHA3} RPM</span></tool>"

@@ -38,7 +38,7 @@ fi
 PANEL+="<txt> ${USED_PERCENT}  </txt>"
 
 # Tooltip
-TOOLTIP="<tool><span font_desc='Source Code Pro Regular'>RAM ================"
+TOOLTIP="<tool><span font_desc='SauceCodePro Nerd Font Mono Medium'>RAM ================"
 TOOLTIP+="\nUsed\t${USED} GB"
 TOOLTIP+="\nFree\t${FREE} GB"
 TOOLTIP+="\nShared\t${SHARED} GB"

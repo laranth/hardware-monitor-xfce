@@ -31,7 +31,7 @@ fi
 PANEL+="<txt>${RXBYTES} ${TXBYTES}</txt>"
 
 # Tooltip
-TOOLTIP="<tool><span font_desc='Source Code Pro Regular'>${IF} on ${HOSTNAME}\n"
+TOOLTIP="<tool><span font_desc='SauceCodePro Nerd Font Mono Medium'>${IF} on ${HOSTNAME}\n"
 TOOLTIP+="\nIPv4\t${IPV4}"
 TOOLTIP+="\nDown\t${RXBYTES} KiBps"
 TOOLTIP+="\nUp\t${TXBYTES} KiBps</span></tool>"

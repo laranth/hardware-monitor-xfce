@@ -45,7 +45,7 @@ MAX_FREQ=$(awk '{printf "%4d", $1}' <<< "${MAX_FREQ}")
 
 
 # Tooltip
-TOOLTIP="<tool><span font_desc='Source Code Pro Regular'>"
+TOOLTIP="<tool><span font_desc='SauceCodePro Nerd Font Mono Medium'>"
 TOOLTIP+="$(grep "model name" /proc/cpuinfo | cut -f2 -d ":" | sed -n 1p | sed -e 's/^[ \t]*//' | sed 's/Processor//')\n" # CPU vendor, model, clock
 TOOLTIP+="\nSTATUS =================="
 TOOLTIP+="\nHalfSec Load:\t${CPU_LOAD}%"

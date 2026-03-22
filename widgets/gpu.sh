@@ -7,15 +7,16 @@ readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly ICON="${DIR}/icons/gpu.png"
 
 # GPU values
-readonly GPU_NAME="$(      nvidia-smi --query-gpu=name               --format=csv,noheader)"
-readonly GPU_TEMP="$(      nvidia-smi --query-gpu=temperature.gpu    --format=csv,noheader,nounits)"
+readonly GPU_NAME="$(      nvidia-smi --query-gpu=name                    --format=csv,noheader)"
+readonly GPU_TEMP="$(      nvidia-smi --query-gpu=temperature.gpu         --format=csv,noheader,nounits)"
 readonly CUDA_VERSION="$(  nvidia-smi -q -d performance | grep "CUDA Version" | sed "s/[^0-9'.]//g")"  # includes the dot
-readonly DRIVER_VERSION="$(nvidia-smi --query-gpu=driver_version     --format=csv,noheader)"
-readonly GPU_UTIL="$(      nvidia-smi --query-gpu=utilization.gpu    --format=csv,noheader,nounits)"
-readonly GPU_MEMORY="$(    nvidia-smi --query-gpu=utilization.memory --format=csv,noheader,nounits)"
-readonly GPU_POWER="$(     nvidia-smi --query-gpu=power.draw.instant --format=csv,noheader,nounits)"
-readonly GPU_FAN_SPEED="$( nvidia-smi --query-gpu=fan.speed          --format=csv,noheader,nounits)"
-readonly GPU_TOTAL_MEM="$( nvidia-smi --query-gpu=memory.total       --format=csv,noheader,nounits)"
+readonly DRIVER_VERSION="$(nvidia-smi --query-gpu=driver_version          --format=csv,noheader)"
+readonly GPU_UTIL="$(      nvidia-smi --query-gpu=utilization.gpu         --format=csv,noheader,nounits)"
+readonly GPU_MEMORY="$(    nvidia-smi --query-gpu=utilization.memory      --format=csv,noheader,nounits)"
+readonly GPU_POWER="$(     nvidia-smi --query-gpu=power.draw.instant      --format=csv,noheader,nounits)"
+readonly GPU_FAN_SPEED="$( nvidia-smi --query-gpu=fan.speed               --format=csv,noheader,nounits)"
+readonly GPU_TOTAL_MEM="$( nvidia-smi --query-gpu=memory.total            --format=csv,noheader,nounits)"
+readonly GPU_CUR_CLK="$(   nvidia-smi --query-gpu=clocks.current.graphics --format=csv,noheader,nounits)"
 readonly TOPGPU="$(        nvidia-smi -q | grep -A 3 'Process ID' | sed 's/: .*steamwebhelper.*/: ...steamwebhelper.../g' | sed 's/\\/\\\\/g' | awk -v RS='--\n' -v FS='\n| :' -v TM=${GPU_TOTAL_MEM} 'gsub(" MiB", "", $8) {printf "%5.2f%% %4s %s\n", $8 / TM, $4, $6}'| sort -rn)"
 
 # Panel
@@ -29,9 +30,10 @@ fi
 PANEL+="<txt>${GPU_UTIL}% @ $GPU_TEMP"°C" </txt>"
 
 # Tooltip
-TOOLTIP="<tool><span font_desc='Source Code Pro Regular'>${GPU_NAME}\n"
+TOOLTIP="<tool><span font_desc='SauceCodePro Nerd Font Mono Medium'>${GPU_NAME}\n"
 TOOLTIP+="\nSTATUS =================="
 TOOLTIP+="\nGPU Load\t${GPU_UTIL}%"
+TOOLTOP+="\nGPU Clock\t${GPU_CUR_CLK} MHz"
 TOOLTIP+="\nTemperature\t${GPU_TEMP}°C"
 TOOLTIP+="\nMemory Used\t${GPU_MEMORY}%"
 TOOLTIP+="\nPower Draw\t${GPU_POWER}W"
